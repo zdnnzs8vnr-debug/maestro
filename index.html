@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#05060b" />
+<meta name="description" content="GUSTAVOEURO — Nati nel dark web. Operativi dal 2022. Banconote Euro Grade AAA+ e trasferimenti PayPal." />
+<title>GUSTAVOEURO // NODE_2022</title>
+<link rel="icon" href="assets/logo.png" />
+<link rel="apple-touch-icon" href="assets/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{
+  colors:{bg:'#05060b',fg:'#e8ecf6',surface:'#0a0c15',line:'#1a1f2e',cy:'#00e5ff',vi:'#8b5cf6',mg:'#ff2e9a',gd:'#ffc53d',lm:'#a3e635'},
+  fontFamily:{sans:['"Space Grotesk"','system-ui','sans-serif'],mono:['"JetBrains Mono"','monospace']}
+}}}
+</script>
+<style>
+:root{
+  --bg:#05060b; --fg:#e8ecf6; --surface:#0a0c15; --border:#1a1f2e;
+  --cy:#00e5ff; --vi:#8b5cf6; --mg:#ff2e9a; --gd:#ffc53d; --lm:#a3e635;
+  --acc:var(--cy); --acc2:var(--vi); --acc-rgb:0,229,255;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+.a-cy{--acc:var(--cy);--acc2:var(--vi);--acc-rgb:0,229,255}
+.a-vi{--acc:var(--vi);--acc2:var(--cy);--acc-rgb:139,92,246}
+.a-mg{--acc:var(--mg);--acc2:var(--vi);--acc-rgb:255,46,154}
+.a-gd{--acc:var(--gd);--acc2:var(--mg);--acc-rgb:255,197,61}
+.a-lm{--acc:var(--lm);--acc2:var(--cy);--acc-rgb:163,230,53}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--fg);
+  font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.mono{font-family:'JetBrains Mono',monospace}
+::selection{background:rgba(0,229,255,.25)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:6px}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#07080f}::-webkit-scrollbar-thumb{background:#1b2233;border-radius:8px}
+
+.net{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(52% 42% at 4% -4%, rgba(0,229,255,.11), transparent 62%),
+    radial-gradient(48% 42% at 102% 4%, rgba(139,92,246,.12), transparent 62%),
+    radial-gradient(44% 38% at 50% 110%, rgba(255,46,154,.08), transparent 64%),
+    linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
+  background-size:100% 100%,100% 100%,100% 100%,42px 42px,42px 42px;background-attachment:fixed}
+#root{position:relative;z-index:2}
+
+.card{position:relative;border-radius:16px;border:1px solid var(--border);
+  background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.006)),var(--surface);
+  transition:transform .28s var(--ease),border-color .28s,box-shadow .28s}
+.card-i:hover{transform:translateY(-3px);border-color:rgba(var(--acc-rgb),.45);
+  box-shadow:0 0 0 1px rgba(var(--acc-rgb),.13),0 14px 40px -18px rgba(var(--acc-rgb),.7)}
+.btn{border-radius:11px;min-height:2.75rem;font-family:'JetBrains Mono',monospace;letter-spacing:.08em;
+  text-transform:uppercase;padding:0 1.15rem;font-size:.75rem;font-weight:600;display:inline-flex;
+  align-items:center;justify-content:center;gap:.5rem;cursor:pointer;border:1px solid transparent;
+  transition:transform .15s cubic-bezier(.34,1.56,.64,1),box-shadow .25s,background .25s,border-color .25s,color .25s}
+.btn:active{transform:scale(.975)}.btn:disabled{opacity:.4;pointer-events:none}
+.btn-p{color:#04070d;background:linear-gradient(120deg,var(--acc),var(--acc2));
+  border-color:rgba(var(--acc-rgb),.6);box-shadow:0 10px 30px -14px rgba(var(--acc-rgb),1)}
+.btn-p:hover{filter:brightness(1.08)}
+.btn-o{color:var(--fg);border-color:rgba(var(--acc-rgb),.4);background:rgba(var(--acc-rgb),.03)}
+.btn-o:hover{background:rgba(var(--acc-rgb),.1);border-color:rgba(var(--acc-rgb),.75)}
+.btn-g{color:#8a93a8;background:transparent}.btn-g:hover{color:var(--fg)}
+.inp{width:100%;border-radius:11px;background:#07080f;border:1px solid var(--border);min-height:2.85rem;
+  font-family:'JetBrains Mono',monospace;padding:0 .95rem;font-size:.86rem;color:var(--fg);transition:border-color .2s,box-shadow .2s}
+.inp::placeholder{color:#4b5468}
+.inp:focus{outline:none;border-color:rgba(var(--acc-rgb),.6);box-shadow:0 0 0 3px rgba(var(--acc-rgb),.09)}
+select.inp option{background:#07080f}
+.badge{font-family:'JetBrains Mono',monospace;letter-spacing:.13em;text-transform:uppercase;font-size:.57rem;
+  color:var(--acc);background:rgba(var(--acc-rgb),.09);border:1px solid rgba(var(--acc-rgb),.3);border-radius:999px;padding:.2rem .62rem;white-space:nowrap}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--acc)}
+.brk{position:absolute;width:15px;height:15px;border-color:rgba(var(--acc-rgb),.5);pointer-events:none}
+.ph{width:100%;border-radius:12px;border:1px solid var(--line);background:#000;object-fit:contain;display:block}
+.ph-pad{padding:8px}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+@keyframes ring{0%{transform:scale(.55);opacity:.8}100%{transform:scale(2);opacity:0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.pulse{animation:pulse 2s ease-in-out infinite}
+.rise{animation:rise .45s var(--ease) both}
+.pop{animation:pop .24s var(--ease) both}
+.flt{animation:float 6s ease-in-out infinite}
+.stg>*{opacity:0;animation:rise .45s var(--ease) forwards}
+.stg>:nth-child(1){animation-delay:.03s}.stg>:nth-child(2){animation-delay:.07s}.stg>:nth-child(3){animation-delay:.11s}
+.stg>:nth-child(4){animation-delay:.15s}.stg>:nth-child(5){animation-delay:.19s}.stg>:nth-child(6){animation-delay:.23s}
+@media (prefers-reduced-motion:reduce){.rise,.stg>*,.pop{animation-duration:.01ms}}
+#err{position:fixed;left:12px;right:12px;bottom:12px;z-index:200;display:none;padding:14px;border-radius:12px;
+  background:#0a0714;border:1px solid #00e5ff55;color:#9beaff;font:12px/1.5 monospace;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<div class="net"></div>
+<div id="root"></div>
+<div id="err"></div>
+
+<script>
+window.__F=function(m){var b=document.getElementById('err');if(b&&b.style.display!=='block'){b.textContent='GUSTAVOEURO // ERRORE DI AVVIO\n'+m+'\n\nRicarica la pagina.';b.style.display='block'}};
+window.addEventListener('error',e=>window.__F(e.message||'Errore'));
+window.addEventListener('unhandledrejection',e=>window.__F(String(e.reason)));
+setTimeout(()=>{var r=document.getElementById('root');if(r&&!r.firstElementChild)window.__F('React non ha montato l\'app.')},7000);
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script>window.React||document.write('<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js" crossorigin><\/script>');</script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<script>window.ReactDOM||document.write('<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin><\/script>');</script>
+<script src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"></script>
+<script>window.Babel||document.write('<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.25.6/babel.min.js"><\/script>');</script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useCallback, useRef, createContext, useContext } = React;
+
+/* ================= CONFIG ================= */
+const LOGO='assets/logo.png';
+const TG='https://t.me/gustavoeuro';
+const TG_REVIEWS='https://t.me/+gBf54xWnFapjMmRh';
+const PGP='7B3F 9A21 C4E8 5D06 1F77  8AC2 30B9 4E11';
+const ONION='gustavoeuro7x2k.onion';
+const SINCE='2022';
+/* password: GUSTAVOEURO */
+const KEY=[71,85,83,84,65,86,79,69,85,82,79];
+const decodeKey=()=>String.fromCharCode.apply(null,KEY);
+const WALLETS={
+  USDT:{a:'Rh2z4dzfHqE5Sd3DEV424ZWUE6XkCpNoPD7DgLiFCcV',net:'TRC-20',sym:'USDT'},
+  BTC:{a:'bc1qcjcf7kunlrla8qn6jwxg00hyjj6w8nnr67lk8v',net:'BITCOIN',sym:'BTC'},
+  LTC:{a:'ltc1qpayxkexa48s6atp48quev2p2f8xnp79pa8zlkx',net:'LITECOIN',sym:'LTC'}
+};
+const SHIPPERS=['POSTE ITALIANE','BRT','GLS','DHL','LOCKER INPOST'];
+const PREFIXES=['+39','+34','+33','+44','+49','+41','+43','+351','+32','+31','+1','+48','+43','+45'];
+const HEX='0123456789ABCDEF';
+const rnd=n=>Array.from({length:n},()=>HEX[Math.floor(Math.random()*16)]).join('');
+const EMAIL_RE=/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+
+/* FOTO REALI — tutte verificate, versioni .jpg (leggere e fluide) */
+const IMG={
+  p20:'https://i.ibb.co/9mwGD10w/IMG-4949.jpg',
+  p50:'https://i.ibb.co/dwBt6Q78/IMG-4956.jpg',
+  g20:['https://i.ibb.co/9mwGD10w/IMG-4949.jpg','https://i.ibb.co/rKysvGxB/IMG-4954.jpg','https://i.ibb.co/35LCKPHm/IMG-4951.jpg','https://i.ibb.co/6J066JyY/IMG-4953.jpg'],
+  g50:['https://i.ibb.co/dwBt6Q78/IMG-4956.jpg','https://i.ibb.co/vxQQwt6Y/IMG-4958.jpg','https://i.ibb.co/xqvq97nX/IMG-4957.jpg','https://i.ibb.co/Y74wt404/IMG-4959.jpg'],
+  gcards:['https://i.ibb.co/pvqFN8mr/IMG-5028.jpg','https://i.ibb.co/PZnzsKRq/IMG-5031.jpg','https://i.ibb.co/szbQNB5/IMG-5032.jpg','https://i.ibb.co/3YdzSFN1/IMG-5033.jpg','https://i.ibb.co/rGQ6qV6g/IMG-5034.jpg']
+};
+
+/* ================= TRADUZIONI (5 lingue) ================= */
+const M={
+it:{
+ c:{back:'← MENU',copy:'COPIA',copied:'COPIATO',total:'TOTALE',close:'Chiudi',add:'Aggiungi',buy:'Acquista',added:'Aggiunto al carrello',rm:'Rimuovi',empty:'Il carrello è vuoto',cart:'CARRELLO',checkout:'CHECKOUT',fill:'Compila tutti i campi obbligatori',menu:'Menu'},
+ gate:{t:'ACCESSO RISERVATO',s:'INSERISCI LA PASSWORD PER ENTRARE',w:'PASSWORD ERRATA',ok:'SBLOCCA',hint:'password fornita su invito'},
+ nav:{node:'Nodo',cash:'Banconote',paypal:'Trasferimenti',quality:'Quality',reviews:'Feedback',faq:'FAQ',track:'Tracking'},
+ home:{tag:'SIAMO NATI NEL DARK WEB. DAL 2022 NON CI SIAMO MAI FERMATI.',
+  sub:'Niente negozio fisico, niente intermediari, niente call center. Solo un nodo, un canale cifrato e persone che rispondono davvero. Ordini, paghi, ricevi: il resto è rumore.',
+  trust:'Ci hanno abbattuto più volte: attacchi, blackout, cambi di infrastruttura. Ogni volta siamo tornati online, sempre con lo stesso indirizzo. È questo che rende un nodo affidabile — la costanza, non le promesse.',
+  badges:['ONLINE DAL 2022','ZERO SPARIZIONI','SPEDIZIONI TRACCIATE','SUPPORTO UMANO'],
+  tlT:'STORICO DEL NODO',tl:[['2022','Nasce il nodo. Prime spedizioni in Europa.'],['2023','Primo blackout. Torniamo online con la stessa utenza.'],['2024','Attacco al server. Dati al sicuro, nodo ripristinato.'],['2025','Nuova infrastruttura, canali cifrati end-to-end.'],['2026','Operativi. Come sempre.']],
+  idx:'INDICE OPERATIVO',since:'OPERATIVI DAL 2022',live:'LIVE // SESSION',trust2:'PROTOCOLLI ATTIVI',
+  d1:'Banconote Grade AAA+ in fibra di cotone',d2:'Routing P2P anonimo su PayPal',d3:'Foto reali del materiale',d4:'Registro feedback su Telegram',d5:'Protocolli, garanzie e spedizioni',d6:'Segui il tuo ordine con il codice'},
+ cash:{e:'MODULO 01 // BANCONOTE',t:'RISERVA CONTANTI FISICI',
+  d:'Accesso al listino Grade AAA+. Banconote in fibra di cotone 100%. Tutti i prodotti superano test UV, penna e scanner bancario. Spedizione sottovuoto con schermatura anti-Xray.',tag:'GRADE AAA+',
+  open:'APRI IL CATALOGO',openS:'Premi per caricare listino completo, foto reali e protocollo di verifica.',
+  sec20:'TAGLIO 20 EUR',sec50:'TAGLIO 50 EUR',pieces:'pezzi',value:'valore facciale',
+  verify:'VERIFICA QUALITÀ',modal:'PROTOCOLLO ISPEZIONE VISIVA',orderid:'ID ORDINE: {id}',scan:'SCANSIONE FRONTE',
+  s1:'Tieni la banconota controluce. A sinistra appaiono l’immagine di Europa, una copia dell’immagine principale e il valore.',
+  s2:'Inclina la banconota. Il numero lucido in basso a sinistra cambia colore, dal verde smeraldo al blu intenso, con un effetto luce che si muove.',
+  s3:'Tocca la banconota. Usiamo stampanti di altissima qualità: la stampa in rilievo è identica alla caratteristica di sicurezza dei tagli da 20 e 50 euro.',
+  s4:'Inclina la banconota. La striscia olografica argentata a destra rivela il ritratto di Europa, una copia dell’immagine principale e il valore.',
+  prods:{p1:['ENTRY LEVEL','€500 (25 pezzi). Fibra di cotone 100%. Ideale per test iniziali e prima valutazione. Superamento garantito dei test penna e UV.'],
+   p2:['SCORTA OPERATIVA','€1.500 (75 pezzi) affiancate. Scorta operativa per la distribuzione. Packaging sottovuoto multi-unità, pensato per rivenditori.'],
+   p3:['VOLUME INDUSTRIALE','€4.000 (200 pezzi). Volume industriale per operazioni su larga scala. Packaging anti-detection professionale.'],
+   p4:['PACK STARTER 50','€750 (15 pezzi). Estetica impeccabile. Filigrana perfetta con banda olografica reattiva. Per clienti esigenti.'],
+   p5:['BANK RESERVE','€2.500 (50 pezzi). Estetica bank-reserve. Ogni pezzo indistinguibile dall’originale. Scanner bancario: 100% pass.'],
+   p6:['POTERE DI SMERCIO ASSOLUTO','€7.500 (150 pezzi). Il nostro prodotto di punta. Caveau personale. Solo per clienti VIP verificati.']},
+  specs:{cotton:'Fibra: Cotone 100%',premium:'Fibra: Premium 100%',uvFull:'UV: Completa',uvPerfect:'UV: Perfetta',
+   qtySingle:'Quantità: Mazzetta singola',qty3:'Quantità: 3 mazzette',qtyIndustrial:'Quantità: Volume industriale',
+   qtyStacks:'Quantità: Pile ordinate',techGen4:'Tecnologia: Gen4 Elite',scanner:'Scanner: 100% Pass',warranty:'Garanzia: Totale'},
+  tgT:'GRUPPO TELEGRAM',tgD:'Comunicazioni, tracking e prove di pagamento passano da qui. È l’unico canale ufficiale.',tgB:'ENTRA NEL CANALE'},
+ paypal:{e:'MODULO 02 // ROUTING P2P',t:'TRASFERIMENTI PAYPAL',
+  d:'Routing P2P con fondi puliti veicolati tramite exchange terzi. Ricevi direttamente sul tuo conto, in modalità Amici e Familiari. Nessuna spedizione: serve solo la tua email PayPal.',tag:'ROUTING SICURO',
+  liq:'LIQUIDITÀ GLOBALE',on:'ONLINE',nodes:'NODI ATTIVI',enc:'ENCRYPTION: RSA-4096',bounce:'BOUNCE',clean:'CLEAN',eta:'ETA',nods:'nodi',
+  cost:'Costo',recv:'Ricevi',avail:'DISPONIBILITÀ FONDI',high:'ALTA',sub:'Ricevi {a} EUR sul tuo PayPal',
+  extra:'Accredito in 1–4 ore lavorative. Nessuna commissione visibile, saldo subito disponibile e prelevabile. Il trasferimento arriva da account terzi verificati: risulta pulito.',
+  packs:{p1:'BASE',p2:'ADVANCED',p3:'VIP',p4:'PREMIUM',p5:'ELITE',p6:'MASTER'}},
+ quality:{e:'GALLERIA VERIFICATA',t:'QUALITY CHECK',d:'Guarda le foto reali di ogni servizio prima di procedere. Trasparenza totale, direttamente dalla fonte.',tag:'ONLINE',
+  sel:'Seleziona un servizio',change:'CAMBIA SERVIZIO',slot:'Foto non ancora disponibile',
+  cash:'Banconote',cards:'Carte',paypal:'Trasferimenti',
+  dcash:'Ogni lotto viene fotografato prima della spedizione. Le immagini mostrano qualità e condizioni reali del materiale.',
+  dcards:'Le carte vengono documentate con foto reali prima della consegna.',
+  dpaypal:'Ogni trasferimento è accompagnato da prove fotografiche dell’operazione.',
+  done:'CONTROLLO COMPLETATO',verified:'CARATTERISTICHE VERIFICATE',
+  v1:'Foto reali e aggiornate',v2:'Materiale verificato',v3:'Spedizione tracciata',v4:'Assistenza dedicata'},
+ reviews:{e:'REGISTRO VERIFICATO',t:'FEEDBACK',q:'LE RECENSIONI SONO SOLO SU TELEGRAM',
+  d:'Il registro feedback è moderato e vive nel canale. Entra per leggere le recensioni verificate e lasciare la tua.',cta:'APRI CANALE FEEDBACK',stat:'98% POSITIVI'},
+ faq:{e:'MODULO 03 // DOCUMENTAZIONE',t:'FAQ & SICUREZZA',d:'Funzionamento, protocolli operativi, garanzie e spedizioni.',tag:'DOCS OK',
+  sec:'CONNESSIONE SICURA',secS:'Crittografia end-to-end attiva // Nessun log salvato',prot:'PROTOCOLLI DI SICUREZZA',
+  protList:['Comunicazioni su canali criptati end-to-end','Nessuna conservazione di dati personali','Transazioni anonime tramite crypto','Server offshore in giurisdizioni sicure'],
+  q1:['Come funziona la spedizione?','Tutti i pacchi viaggiano in modalità stealth con packaging anonimo: la confezione esterna non riporta alcun riferimento al contenuto. Usiamo corrieri affidabili e forniamo tracking su Telegram. Tempi medi: EU 48–72h, Extra-EU 5–7 giorni.'],
+  q2:['Accettate pagamenti anonimi?','Sì. Accettiamo criptovalute: sono il metodo più rapido e garantiscono anonimato totale. Nessun dato bancario, nessun nome, nessuna tracciabilità verso di te.'],
+  q3:['Come funziona la ricarica PayPal?','Dopo il pagamento i fondi vengono trasferiti sul tuo PayPal entro 1–4 ore tramite metodo Amici e Familiari. Non ci sono commissioni visibili e il saldo è immediatamente disponibile e prelevabile.'],
+  q4:['Le banconote passano i controlli?','Sì. Tutto il materiale è Grade AAA+ e supera il test della penna anti-falso, la lampada UV e il controllo tattile della fibra di cotone. Sono praticamente indistinguibili dagli originali.'],
+  q5:['E se il pacco viene sequestrato?','In caso di problemi doganali documentati (foto del sequestro) provvediamo a rispedizione gratuita o rimborso completo. Grazie al packaging anti-Xray il tasso di successo supera il 98%.'],
+  q6:['I miei dati sono al sicuro?','Non conserviamo dati personali. Le conversazioni Telegram sono cifrate e i log vengono cancellati automaticamente ogni 24 ore. Non chiediamo mai documenti o informazioni identificative.'],
+  q7:['Posso fare ordini ricorrenti?','Assolutamente sì. I clienti abituali accedono a sconti dedicati e hanno priorità sulle nuove scorte. Dopo il terzo ordine completato entri automaticamente nel programma VIP.'],
+  q8:['Quanto tempo serve per essere operativo?','Se scegli crypto l’ordine è operativo in pochi minuti: paghi, invii la prova su Telegram e parte la preparazione. Con bonifico o buoni Amazon servono 24–48 ore lavorative per la verifica.']},
+ legal:{privacy:{t:'INFORMATIVA PRIVACY',u:'Ultimo aggiornamento: Aprile 2026. Trattamento conforme, crittografia avanzata, nessuna condivisione con terze parti.',
+   s:[['1. RACCOLTA DEI DATI','GUSTAVOEURO raccoglie esclusivamente i dati strettamente necessari per erogare i servizi richiesti. I dati personali vengono trattati nel rispetto della normativa vigente in materia di protezione dei dati.'],
+      ['2. FINALITÀ DEL TRATTAMENTO','I dati raccolti sono utilizzati solo per gestire le richieste di contatto, migliorare l’esperienza utente, adempiere a obblighi di legge e garantire la sicurezza della piattaforma.'],
+      ['3. CONSERVAZIONE E SICUREZZA','I dati sono conservati per il tempo strettamente necessario e protetti con crittografia avanzata. Al termine del periodo previsto vengono eliminati in modo sicuro.'],
+      ['4. DIRITTI DELL’INTERESSATO','Puoi accedere ai tuoi dati, richiederne la rettifica o la cancellazione e opporti al trattamento in qualsiasi momento contattando l’operatore tramite i canali ufficiali.'],
+      ['5. TRASFERIMENTO DEI DATI','I dati personali non vengono venduti, trasferiti o condivisi con terze parti, salvo obblighi di legge.']]},
+  terms:{t:'TERMINI E CONDIZIONI',u:'Ultimo aggiornamento: Aprile 2026. Condizioni d’uso, responsabilità e regole operative.',
+   s:[['1. ACCETTAZIONE','L’accesso e l’utilizzo del portale implicano l’accettazione integrale dei presenti termini. Se non li accetti, ti invitiamo a non usare i servizi.'],
+      ['2. DESCRIZIONE DEL SERVIZIO','GUSTAVOEURO è una piattaforma informativa che dà accesso a contenuti e servizi. Tutti i contenuti sono forniti a scopo informativo e di intrattenimento.'],
+      ['3. REQUISITI DI ETÀ','L’accesso è riservato ai maggiorenni (18+). Utilizzando la piattaforma dichiari di avere l’età legale richiesta nel tuo paese di residenza.'],
+      ['4. CONDOTTA DELL’UTENTE','Ti impegni a non usare il servizio per scopi illegali, a non comprometterne la sicurezza, a non condividere informazioni riservate con terzi e a rispettare la proprietà intellettuale.'],
+      ['5. LIMITAZIONE DI RESPONSABILITÀ','Non siamo responsabili per danni diretti o indiretti derivanti dall’uso o dall’impossibilità di usare il servizio. I contenuti sono forniti “così come sono”, senza garanzie di alcun tipo.'],
+      ['6. MODIFICHE','Ci riserviamo il diritto di modificare i presenti termini in qualsiasi momento. Le modifiche sono efficaci dalla data di pubblicazione.']]},
+  cookies:{t:'COOKIE POLICY',u:'Ultimo aggiornamento: Aprile 2026. Solo cookie tecnici essenziali.',
+   s:[['1. COSA SONO','I cookie sono piccoli file di testo memorizzati sul dispositivo durante la navigazione. Usiamo esclusivamente cookie tecnici essenziali.'],
+      ['2. TIPOLOGIE','Cookie di sessione per la navigazione, cookie di sicurezza contro attacchi informatici e cookie di preferenza per memorizzare le impostazioni.'],
+      ['3. GESTIONE','Puoi gestire le preferenze dal browser. Disabilitare i cookie tecnici può compromettere il funzionamento della piattaforma.'],
+      ['4. TERZE PARTI','Non incorporiamo cookie di terze parti né condividiamo dati con piattaforme esterne di advertising o analytics.'],
+      ['5. DURATA','I cookie tecnici durano al massimo la sessione o 24 ore. Nessun cookie persistente a lungo termine.'],
+      ['6. AGGIORNAMENTI','La presente policy può essere aggiornata periodicamente: ti invitiamo a consultarla con regolarità.']]}},
+ checkout:{sec:'SESSIONE CRITTOGRAFATA',steps:['DATI','VERIFICA','PAGAMENTO','CONFERMA'],
+  s1:'STEP 1 // SPEDIZIONE E LOGISTICA',s1s:'Inserisci i dati per la consegna anonima',
+  s1p:'STEP 1 // VERIFICA EMAIL PAYPAL',s1ps:'Inserisci l’email del tuo conto PayPal: riceverai il trasferimento lì',
+  sum:'RIEPILOGO ORDINE PROTETTO',tot:'TOTALE',addr:'INDIRIZZO DI SPEDIZIONE',street:'VIA / PIAZZA',num:'N.',zip:'CAP',city:'CITTÀ',
+  cont:'CONTATTI',email:'EMAIL',phone:'CELLULARE',cour:'SELEZIONA CORRIERE O PUNTO DI RITIRO',locker:'CODICE LOCKER',
+  pmail:'EMAIL PAYPAL DESTINATARIO',pmail2:'CONFERMA EMAIL PAYPAL',pmailE:'Inserisci l’email PayPal',pmailB:'Inserisci un’email valida',pmailM:'Le email non coincidono',
+  go:'CONTINUA',fill:'Compila tutti i campi obbligatori',selcourier:'Seleziona un corriere',noshipp:'SOLO TRASFERIMENTO — NESSUNA SPEDIZIONE',
+  sh:{p:['ECONOMY','2-4 GG'],b:['EXPRESS','2-3 GG'],g:['PREMIUM + IMBALLAGGIO SICURO','24-48H'],d:['ASSICURATA','24h'],l:['ANONIMO','2-4 GG']},
+  s2:'STEP 2 // METODO DI PAGAMENTO',sub2:'SELEZIONA COME VUOI PAGARE',
+  crypto:'CRYPTO',csub:'USDT - anonimo',cbadge:'CONSIGLIATO - ELABORAZIONE ISTANTANEA',nofee:'0% TASSE',cpers:'Proteggi la tua privacy. Nessun intermediario bancario, transazione anonima, cifrata, elaborata in meno di 5 minuti.',
+  bon:'BONIFICO BANCARIO',bsub:'SEPA - 24/48H',bfee:'+10% GESTIONE',amz:'BUONI AMAZON',asub:'verifica manuale',afee:'+20% CONVERSIONE',
+  cq:['HAI GIÀ UN PORTAFOGLIO CRYPTO?','Per pagare in USDT ti serve un wallet','SÌ, HO GIÀ UN WALLET','NO, NON CE L’HO'],
+  cg:['COME CREARE UN WALLET CRYPTO','Scarica Trust Wallet o MetaMask','Crea un nuovo wallet e salva la frase segreta','Compra USDT su Binance o altro exchange','Trasferisci USDT al tuo wallet','HO CAPITO, PROCEDI'],
+  aq:['HAI GIÀ UN BUONO AMAZON?','Devi avere il codice a 15 cifre + foto fronte/retro','SÌ, HO IL BUONO','NO, DEVO COMPRARLO'],
+  ag:['DOVE COMPRARE UN BUONO AMAZON','I buoni si trovano in tabaccherie, supermercati, Mediaworld e altri negozi. Conserva lo scontrino con il codice a 15 cifre.','IMPORTANTE: NON riscattarlo sul tuo account. Invia il codice vergine.','HO CAPITO, PROCEDI'],
+  conf:'CONFERMA ORDINE',rate:'LIVE RATE: 1 EUR ≈ 1.15 USDT',net:'SELEZIONA RETE',send:'IMPORTO DA INVIARE',addrw:'INDIRIZZO WALLET',
+  sub:'SUBTOTALE',bfeeL:'TASSA DI GESTIONE BANCARIA +10%',vfeeL:'RICARICO CONVERSIONE VOUCHER +20%',pay:'TOTALE DA PAGARE',
+  timeleft:'TEMPO RIMANENTE',done:'ORDINE CONFERMATO',doneS:'REGISTRATO NEL SISTEMA',code:'CODICE ORDINE',cc:'COPIA CODICE',
+  wait:'IN ATTESA DI CONFERMA SULLA BLOCKCHAIN...',ct:'CONTATTA OPERATORE SU TELEGRAM',back:'TORNA',
+  warn:'L’ordine NON parte finché non invii il codice ordine e la prova di pagamento all’operatore su Telegram.',
+  failT:'PAGAMENTO NON ANDATO A BUON FINE?',fail:'Nessun problema: contatta GUSTAVOEURO su Telegram con il tuo codice ordine e completa l’ordine in chat. L’operatore ti guiderà passo passo.',
+  amzI:'Invia su Telegram il CODICE ORDINE, il CODICE BUONO e la FOTO del buono. Il totale include il +20% di conversione voucher. I codici vengono verificati manualmente.',
+  bonI:'Contatta l’operatore su Telegram con il CODICE ORDINE. Ti comunicherà IBAN, intestatario e causale. Il totale include la tassa di gestione bancaria del +10%.',
+  cryptoI:'Invia esattamente l’importo indicato all’indirizzo mostrato, sulla rete selezionata. Poi manda su Telegram il CODICE ORDINE e lo screenshot/hash della transazione.'},
+ track:{e:'MODULO 04 // TRACKING',t:'TRACCIA IL TUO ORDINE',d:'Inserisci il codice ordine ricevuto alla conferma per vedere stato e articoli selezionati.',ph:'GST-XXXX-XXXX',go:'CERCA ORDINE',none:'Nessun ordine trovato con questo codice.',found:'ORDINE TROVATO',items:'ARTICOLI SELEZIONATI',date:'DATA',
+  st:['ORDINE REGISTRATO','PAGAMENTO IN VERIFICA','IN PREPARAZIONE','SPEDITO'],
+  note:'Lo stato avanza dopo la conferma del pagamento su Telegram. Se il pagamento non è andato a buon fine, contatta l’operatore e completa l’ordine in chat.',
+  local:'Nota: gli ordini sono salvati nel browser. Per lo stato aggiornato fai riferimento al canale Telegram.'},
+ foot:{made:'PORTALE CREATO NEL 2022 // OPERATIVI DAL 2022'}
+},
+en:{
+ c:{back:'← MENU',copy:'COPY',copied:'COPIED',total:'TOTAL',close:'Close',add:'Add',buy:'Buy',added:'Added to cart',rm:'Remove',empty:'Your cart is empty',cart:'CART',checkout:'CHECKOUT',fill:'Fill in all required fields',menu:'Menu'},
+ gate:{t:'RESTRICTED ACCESS',s:'ENTER THE PASSWORD TO GET IN',w:'WRONG PASSWORD',ok:'UNLOCK',hint:'password given by invitation'},
+ nav:{node:'Node',cash:'Banknotes',paypal:'Transfers',quality:'Quality',reviews:'Feedback',faq:'FAQ',track:'Tracking'},
+ home:{tag:'BORN ON THE DARK WEB. SINCE 2022 WE HAVE NEVER STOPPED.',
+  sub:'No physical shop, no middlemen, no call centre. Just a node, an encrypted channel and people who actually reply. You order, you pay, you receive: the rest is noise.',
+  trust:'We have been knocked down several times: attacks, blackouts, infrastructure changes. Every single time we came back online, always on the same address. That is what makes a node reliable — consistency, not promises.',
+  badges:['ONLINE SINCE 2022','ZERO VANISHINGS','TRACKED SHIPPING','HUMAN SUPPORT'],
+  tlT:'NODE HISTORY',tl:[['2022','The node is born. First shipments across Europe.'],['2023','First blackout. Back online under the same handle.'],['2024','Server attack. Data safe, node restored.'],['2025','New infrastructure, end-to-end encrypted channels.'],['2026','Operational. As always.']],
+  idx:'OPERATIVE INDEX',since:'OPERATING SINCE 2022',live:'LIVE // SESSION',trust2:'ACTIVE PROTOCOLS',
+  d1:'Grade AAA+ cotton-fiber banknotes',d2:'Anonymous P2P routing on PayPal',d3:'Real photos of the material',d4:'Feedback registry on Telegram',d5:'Protocols, guarantees and shipping',d6:'Track your order with the code'},
+ cash:{e:'MODULE 01 // BANKNOTES',t:'PHYSICAL CASH RESERVE',
+  d:'Access to the Grade AAA+ catalog. 100% cotton fiber banknotes. Every product passes UV, pen and bank scanner tests. Vacuum-sealed shipping with anti-Xray shielding.',tag:'GRADE AAA+',
+  open:'OPEN THE CATALOG',openS:'Press to load the full catalog, real photos and the inspection protocol.',
+  sec20:'20 EUR DENOMINATION',sec50:'50 EUR DENOMINATION',pieces:'pieces',value:'face value',
+  verify:'VERIFY QUALITY',modal:'VISUAL INSPECTION PROTOCOL',orderid:'ORDER ID: {id}',scan:'FRONT SCAN',
+  s1:'Hold the banknote against the light. On the left you will see the image of Europa, a copy of the main image and the value.',
+  s2:'Tilt the banknote. The shiny number in the lower-left corner shifts from emerald green to deep blue, with a moving light effect.',
+  s3:'Touch the banknote. We use the highest-quality printers: the raised print is identical to the security feature of the 20 and 50 euro notes.',
+  s4:'Tilt the banknote. The silver hologram stripe on the right reveals a portrait of Europa, a copy of the main image and the value.',
+  prods:{p1:['ENTRY LEVEL','€500 (25 pieces). 100% cotton fiber. Ideal for initial testing and first evaluation. Guaranteed to pass pen and UV tests.'],
+   p2:['OPERATIONAL STOCK','€1,500 (75 pieces) side by side. Operational stock for distribution. Multi-unit vacuum packaging, built for resellers.'],
+   p3:['INDUSTRIAL VOLUME','€4,000 (200 pieces). Industrial volume for large-scale operations. Professional anti-detection packaging.'],
+   p4:['PACK STARTER 50','€750 (15 pieces). Flawless aesthetics. Perfect watermark with reactive holographic band. For demanding clients.'],
+   p5:['BANK RESERVE','€2,500 (50 pieces). Bank-reserve aesthetics. Every piece indistinguishable from the original. Bank scanner: 100% pass.'],
+   p6:['ABSOLUTE DISTRIBUTION POWER','€7,500 (150 pieces). Our flagship product. Personal vault. Verified VIP clients only.']},
+  specs:{cotton:'Fiber: 100% Cotton',premium:'Fiber: 100% Premium',uvFull:'UV: Complete',uvPerfect:'UV: Perfect',
+   qtySingle:'Quantity: Single bundle',qty3:'Quantity: 3 bundles',qtyIndustrial:'Quantity: Industrial volume',
+   qtyStacks:'Quantity: Ordered stacks',techGen4:'Technology: Gen4 Elite',scanner:'Scanner: 100% Pass',warranty:'Warranty: Full'},
+  tgT:'TELEGRAM GROUP',tgD:'Communication, tracking and payment proof go through here. It is the only official channel.',tgB:'JOIN THE CHANNEL'},
+ paypal:{e:'MODULE 02 // P2P ROUTING',t:'PAYPAL TRANSFERS',
+  d:'P2P routing with clean funds via third-party exchanges. You receive directly on your account, through Friends and Family. No shipping: we only need your PayPal email.',tag:'SECURE ROUTING',
+  liq:'GLOBAL LIQUIDITY',on:'ONLINE',nodes:'ACTIVE NODES',enc:'ENCRYPTION: RSA-4096',bounce:'BOUNCE',clean:'CLEAN',eta:'ETA',nods:'nodes',
+  cost:'Cost',recv:'Receive',avail:'FUNDS AVAILABILITY',high:'HIGH',sub:'Receive {a} EUR on your PayPal',
+  extra:'Credited within 1–4 working hours. No visible fees, balance immediately available and withdrawable. The transfer comes from verified third-party accounts: it is clean.',
+  packs:{p1:'BASE',p2:'ADVANCED',p3:'VIP',p4:'PREMIUM',p5:'ELITE',p6:'MASTER'}},
+ quality:{e:'VERIFIED GALLERY',t:'QUALITY CHECK',d:'See real photos of every service before you proceed. Full transparency, straight from the source.',tag:'ONLINE',
+  sel:'Select a service',change:'CHANGE SERVICE',slot:'Photo not available yet',
+  cash:'Banknotes',cards:'Cards',paypal:'Transfers',
+  dcash:'Every batch is photographed before shipping. Images show the real quality and condition of the material.',
+  dcards:'Cards are documented with real photos before delivery.',
+  dpaypal:'Every transfer comes with photographic proof of the operation.',
+  done:'CHECK COMPLETED',verified:'VERIFIED FEATURES',
+  v1:'Real, up-to-date photos',v2:'Verified material',v3:'Tracked shipping',v4:'Dedicated support'},
+ reviews:{e:'VERIFIED REGISTRY',t:'FEEDBACK',q:'REVIEWS LIVE ON TELEGRAM ONLY',
+  d:'The feedback registry is moderated and lives in the channel. Join to read verified reviews and leave yours.',cta:'OPEN FEEDBACK CHANNEL',stat:'98% POSITIVE'},
+ faq:{e:'MODULE 03 // DOCUMENTATION',t:'FAQ & SECURITY',d:'How it works, operating protocols, guarantees and shipping.',tag:'DOCS OK',
+  sec:'SECURE CONNECTION',secS:'End-to-end encryption active // No logs stored',prot:'SECURITY PROTOCOLS',
+  protList:['End-to-end encrypted channels','No personal data retention','Anonymous crypto transactions','Offshore servers in secure jurisdictions'],
+  q1:['How does shipping work?','All packages ship in stealth mode with anonymous packaging: the outer box carries no reference to its contents. We use reliable couriers and provide tracking on Telegram. Average times: EU 48–72h, non-EU 5–7 days.'],
+  q2:['Do you accept anonymous payments?','Yes. We accept cryptocurrencies: the fastest method, with total anonymity. No bank data, no name, no traceability back to you.'],
+  q3:['How does the PayPal top-up work?','After payment, funds are transferred to your PayPal within 1–4 hours via Friends and Family. No visible fees and the balance is immediately available and withdrawable.'],
+  q4:['Do the banknotes pass inspections?','Yes. All material is Grade AAA+ and passes the counterfeit pen test, the UV lamp and the tactile cotton-fiber check. Practically indistinguishable from the originals.'],
+  q5:['What if the package is seized?','With documented customs issues (photo of the seizure) we arrange free reshipping or a full refund. Thanks to anti-Xray packaging the success rate is above 98%.'],
+  q6:['Is my data safe?','We store no personal data. Telegram chats are encrypted and logs are deleted every 24 hours. We never ask for documents or identifying information.'],
+  q7:['Can I place recurring orders?','Absolutely. Regular clients get dedicated discounts and priority on new stock. After your third completed order you automatically join the VIP program.'],
+  q8:['How long before I am operational?','With crypto the order is live within minutes: you pay, send proof on Telegram and preparation starts. With bank transfer or Amazon vouchers it takes 24–48 working hours for verification.']},
+ legal:{privacy:{t:'PRIVACY POLICY',u:'Last updated: April 2026. Compliant processing, advanced encryption, no third-party sharing.',
+   s:[['1. DATA COLLECTION','GUSTAVOEURO collects only the data strictly necessary to deliver the requested services. Personal data is processed in compliance with current data protection regulations.'],
+      ['2. PURPOSE','Collected data is used only to handle contact requests, improve user experience, meet legal obligations and ensure platform security.'],
+      ['3. STORAGE AND SECURITY','Data is stored only as long as necessary and protected with advanced encryption. At the end of the retention period it is securely deleted.'],
+      ['4. YOUR RIGHTS','You may access your data, request rectification or deletion and object to processing at any time by contacting the operator through official channels.'],
+      ['5. DATA TRANSFER','Personal data is not sold, transferred or shared with third parties, except where required by law.']]},
+  terms:{t:'TERMS AND CONDITIONS',u:'Last updated: April 2026. Terms of use, liability and operating rules.',
+   s:[['1. ACCEPTANCE','Accessing and using the portal implies full acceptance of these terms. If you do not accept them, please do not use the services.'],
+      ['2. SERVICE DESCRIPTION','GUSTAVOEURO is an informational platform providing access to content and services, for informational and entertainment purposes.'],
+      ['3. AGE REQUIREMENTS','Access is reserved for adults (18+). By using the platform you declare that you are of legal age in your country of residence.'],
+      ['4. USER CONDUCT','You agree not to use the service for illegal purposes, not to compromise its security, not to share confidential information with third parties and to respect intellectual property.'],
+      ['5. LIMITATION OF LIABILITY','We are not liable for direct or indirect damages arising from the use or inability to use the service. Content is provided “as is”, without warranties.'],
+      ['6. CHANGES','We reserve the right to modify these terms at any time. Changes take effect from the date of publication.']]},
+  cookies:{t:'COOKIE POLICY',u:'Last updated: April 2026. Essential technical cookies only.',
+   s:[['1. WHAT THEY ARE','Cookies are small text files stored on your device while browsing. We use essential technical cookies only.'],
+      ['2. TYPES','Session cookies for navigation, security cookies against cyberattacks and preference cookies to store your settings.'],
+      ['3. MANAGEMENT','You can manage preferences from your browser. Disabling technical cookies may impair the platform.'],
+      ['4. THIRD PARTIES','We embed no third-party cookies and share no data with external advertising or analytics platforms.'],
+      ['5. DURATION','Technical cookies last a session at most or 24 hours. No long-term persistent cookies.'],
+      ['6. UPDATES','This policy may be updated periodically: please review it regularly.']]}},
+ checkout:{sec:'ENCRYPTED SESSION',steps:['DETAILS','VERIFY','PAYMENT','CONFIRM'],
+  s1:'STEP 1 // SHIPPING & LOGISTICS',s1s:'Enter the details for anonymous delivery',
+  s1p:'STEP 1 // VERIFY PAYPAL EMAIL',s1ps:'Enter your PayPal account email: the transfer will land there',
+  sum:'PROTECTED ORDER SUMMARY',tot:'TOTAL',addr:'SHIPPING ADDRESS',street:'STREET / SQUARE',num:'NO.',zip:'ZIP',city:'CITY',
+  cont:'CONTACTS',email:'EMAIL',phone:'MOBILE',cour:'SELECT A COURIER OR PICKUP POINT',locker:'LOCKER CODE',
+  pmail:'RECIPIENT PAYPAL EMAIL',pmail2:'CONFIRM PAYPAL EMAIL',pmailE:'Enter the PayPal email',pmailB:'Enter a valid email',pmailM:'Emails do not match',
+  go:'CONTINUE',fill:'Fill in all required fields',selcourier:'Select a courier',noshipp:'TRANSFER ONLY — NO SHIPPING',
+  sh:{p:['ECONOMY','2-4 DAYS'],b:['EXPRESS','2-3 DAYS'],g:['PREMIUM + SECURE PACKAGING','24-48H'],d:['INSURED','24h'],l:['ANONYMOUS','2-4 DAYS']},
+  s2:'STEP 2 // PAYMENT METHOD',sub2:'SELECT HOW YOU WANT TO PAY',
+  crypto:'CRYPTO',csub:'USDT - anonymous',cbadge:'RECOMMENDED - INSTANT PROCESSING',nofee:'0% FEES',cpers:'Protect your privacy. No banking intermediary, anonymous transaction, encrypted, processed in under 5 minutes.',
+  bon:'BANK TRANSFER',bsub:'SEPA - 24/48H',bfee:'+10% HANDLING',amz:'AMAZON VOUCHERS',asub:'manual verification',afee:'+20% CONVERSION',
+  cq:['DO YOU ALREADY HAVE A CRYPTO WALLET?','To pay in USDT you need a wallet','YES, I HAVE ONE','NO, I DON’T'],
+  cg:['HOW TO CREATE A CRYPTO WALLET','Download Trust Wallet or MetaMask','Create a new wallet and save the secret phrase','Buy USDT on Binance or another exchange','Transfer USDT to your wallet','GOT IT, PROCEED'],
+  aq:['DO YOU ALREADY HAVE AN AMAZON VOUCHER?','You need the 15-digit code + front/back photo','YES, I HAVE IT','NO, I NEED TO BUY IT'],
+  ag:['WHERE TO BUY AN AMAZON VOUCHER','Vouchers are sold in tobacco shops, supermarkets, electronics stores and more. Keep the receipt with the 15-digit code.','IMPORTANT: do NOT redeem it on your account. Send the unused code.','GOT IT, PROCEED'],
+  conf:'CONFIRM ORDER',rate:'LIVE RATE: 1 EUR ≈ 1.15 USDT',net:'SELECT NETWORK',send:'AMOUNT TO SEND',addrw:'WALLET ADDRESS',
+  sub:'SUBTOTAL',bfeeL:'BANK HANDLING FEE +10%',vfeeL:'VOUCHER CONVERSION SURCHARGE +20%',pay:'TOTAL TO PAY',
+  timeleft:'TIME LEFT',done:'ORDER CONFIRMED',doneS:'REGISTERED IN THE SYSTEM',code:'ORDER CODE',cc:'COPY CODE',
+  wait:'WAITING FOR BLOCKCHAIN CONFIRMATION...',ct:'CONTACT OPERATOR ON TELEGRAM',back:'BACK',
+  warn:'The order does NOT start until you send the order code and proof of payment to the operator on Telegram.',
+  failT:'PAYMENT NOT SUCCESSFUL?',fail:'No problem: contact GUSTAVOEURO on Telegram with your order code and complete the order in chat. The operator will guide you step by step.',
+  amzI:'Send on Telegram the ORDER CODE, the VOUCHER CODE and the PHOTO of the voucher. The total includes the +20% voucher conversion. Codes are manually verified.',
+  bonI:'Contact the operator on Telegram with the ORDER CODE. They will provide IBAN, account holder and reference. The total includes the +10% bank handling fee.',
+  cryptoI:'Send exactly the stated amount to the shown address on the selected network. Then send the ORDER CODE and the transaction screenshot/hash on Telegram.'},
+ track:{e:'MODULE 04 // TRACKING',t:'TRACK YOUR ORDER',d:'Enter the order code you received at confirmation to see status and selected items.',ph:'GST-XXXX-XXXX',go:'SEARCH ORDER',none:'No order found with this code.',found:'ORDER FOUND',items:'SELECTED ITEMS',date:'DATE',
+  st:['ORDER REGISTERED','PAYMENT UNDER REVIEW','IN PREPARATION','SHIPPED'],
+  note:'The status advances after payment confirmation on Telegram. If the payment was not successful, contact the operator and complete the order in chat.',
+  local:'Note: orders are stored in your browser. For the updated status always refer to the Telegram channel.'},
+ foot:{made:'PORTAL BUILT IN 2022 // OPERATING SINCE 2022'}
+},
+es:{
+ c:{back:'← MENÚ',copy:'COPIAR',copied:'COPIADO',total:'TOTAL',close:'Cerrar',add:'Añadir',buy:'Comprar',added:'Añadido al carrito',rm:'Eliminar',empty:'Tu carrito está vacío',cart:'CARRITO',checkout:'CHECKOUT',fill:'Rellena todos los campos obligatorios',menu:'Menú'},
+ gate:{t:'ACCESO RESTRINGIDO',s:'INTRODUCE LA CONTRASEÑA PARA ENTRAR',w:'CONTRASEÑA INCORRECTA',ok:'DESBLOQUEAR',hint:'contraseña dada por invitación'},
+ nav:{node:'Nodo',cash:'Billetes',paypal:'Transferencias',quality:'Quality',reviews:'Reseñas',faq:'FAQ',track:'Seguimiento'},
+ home:{tag:'NACIMOS EN LA DARK WEB. DESDE 2022 NUNCA NOS HEMOS PARADO.',
+  sub:'Sin tienda física, sin intermediarios, sin call center. Solo un nodo, un canal cifrado y gente que responde de verdad. Pides, pagas, recibes: el resto es ruido.',
+  trust:'Nos han tumbado varias veces: ataques, apagones, cambios de infraestructura. Cada vez volvimos online, siempre con la misma dirección. Eso es lo que hace fiable a un nodo: la constancia, no las promesas.',
+  badges:['ONLINE DESDE 2022','CERO DESAPARICIONES','ENVÍOS CON SEGUIMIENTO','SOPORTE HUMANO'],
+  tlT:'HISTORIAL DEL NODO',tl:[['2022','Nace el nodo. Primeros envíos por Europa.'],['2023','Primer apagón. Volvemos online con el mismo usuario.'],['2024','Ataque al servidor. Datos a salvo, nodo restaurado.'],['2025','Nueva infraestructura, canales cifrados de extremo a extremo.'],['2026','Operativos. Como siempre.']],
+  idx:'ÍNDICE OPERATIVO',since:'OPERATIVOS DESDE 2022',live:'LIVE // SESIÓN',trust2:'PROTOCOLOS ACTIVOS',
+  d1:'Billetes Grade AAA+ en fibra de algodón',d2:'Routing P2P anónimo en PayPal',d3:'Fotos reales del material',d4:'Registro de reseñas en Telegram',d5:'Protocolos, garantías y envíos',d6:'Sigue tu pedido con el código'},
+ cash:{e:'MÓDULO 01 // BILLETES',t:'RESERVA DE EFECTIVO FÍSICO',
+  d:'Acceso al catálogo Grade AAA+. Billetes en fibra de algodón 100%. Todos los productos superan tests UV, de bolígrafo y de escáner bancario. Envío al vacío con blindaje anti-Xray.',tag:'GRADE AAA+',
+  open:'ABRIR EL CATÁLOGO',openS:'Pulsa para cargar el listado completo, fotos reales y el protocolo de inspección.',
+  sec20:'DENOMINACIÓN 20 EUR',sec50:'DENOMINACIÓN 50 EUR',pieces:'piezas',value:'valor facial',
+  verify:'VERIFICAR CALIDAD',modal:'PROTOCOLO DE INSPECCIÓN VISUAL',orderid:'ID PEDIDO: {id}',scan:'ESCANEO FRONTAL',
+  s1:'Sostén el billete a contraluz. A la izquierda aparecen la imagen de Europa, una copia de la imagen principal y el valor.',
+  s2:'Inclina el billete. El número brillante de la esquina inferior izquierda cambia del verde esmeralda al azul intenso, con un efecto de luz que se mueve.',
+  s3:'Toca el billete. Usamos impresoras de altísima calidad: la impresión en relieve es idéntica al elemento de seguridad de los billetes de 20 y 50 euros.',
+  s4:'Inclina el billete. La banda holográfica plateada de la derecha revela un retrato de Europa, una copia de la imagen principal y el valor.',
+  prods:{p1:['ENTRY LEVEL','€500 (25 piezas). Fibra de algodón 100%. Ideal para pruebas iniciales y primera evaluación. Superación garantizada de los tests de bolígrafo y UV.'],
+   p2:['STOCK OPERATIVO','€1.500 (75 piezas) juntas. Stock operativo para distribución. Empaquetado al vacío multiunidad, pensado para revendedores.'],
+   p3:['VOLUMEN INDUSTRIAL','€4.000 (200 piezas). Volumen industrial para operaciones a gran escala. Empaquetado anti-detección profesional.'],
+   p4:['PACK STARTER 50','€750 (15 piezas). Estética impecable. Marca de agua perfecta con banda holográfica reactiva. Para clientes exigentes.'],
+   p5:['BANK RESERVE','€2.500 (50 piezas). Estética bank-reserve. Cada pieza indistinguible del original. Escáner bancario: 100% pass.'],
+   p6:['PODER DE DISTRIBUCIÓN ABSOLUTO','€7.500 (150 piezas). Nuestro producto estrella. Caja fuerte personal. Solo clientes VIP verificados.']},
+  specs:{cotton:'Fibra: Algodón 100%',premium:'Fibra: Premium 100%',uvFull:'UV: Completa',uvPerfect:'UV: Perfecta',
+   qtySingle:'Cantidad: Fajo individual',qty3:'Cantidad: 3 fajos',qtyIndustrial:'Cantidad: Volumen industrial',
+   qtyStacks:'Cantidad: Pilas ordenadas',techGen4:'Tecnología: Gen4 Elite',scanner:'Escáner: 100% Pass',warranty:'Garantía: Total'},
+  tgT:'GRUPO TELEGRAM',tgD:'Comunicación, seguimiento y pruebas de pago pasan por aquí. Es el único canal oficial.',tgB:'ENTRAR AL CANAL'},
+ paypal:{e:'MÓDULO 02 // ROUTING P2P',t:'TRANSFERENCIAS PAYPAL',
+  d:'Routing P2P con fondos limpios a través de exchanges de terceros. Recibes directamente en tu cuenta, vía Amigos y Familia. Sin envío: solo necesitamos tu email de PayPal.',tag:'ROUTING SEGURO',
+  liq:'LIQUIDEZ GLOBAL',on:'ONLINE',nodes:'NODOS ACTIVOS',enc:'ENCRYPTION: RSA-4096',bounce:'BOUNCE',clean:'CLEAN',eta:'ETA',nods:'nodos',
+  cost:'Coste',recv:'Recibes',avail:'DISPONIBILIDAD DE FONDOS',high:'ALTA',sub:'Recibe {a} EUR en tu PayPal',
+  extra:'Abonado en 1–4 horas laborables. Sin comisiones visibles, saldo disponible y retirable de inmediato. La transferencia llega desde cuentas de terceros verificadas: es limpia.',
+  packs:{p1:'BASE',p2:'ADVANCED',p3:'VIP',p4:'PREMIUM',p5:'ELITE',p6:'MASTER'}},
+ quality:{e:'GALERÍA VERIFICADA',t:'QUALITY CHECK',d:'Mira fotos reales de cada servicio antes de continuar. Transparencia total, desde la fuente.',tag:'EN LÍNEA',
+  sel:'Selecciona un servicio',change:'CAMBIAR SERVICIO',slot:'Foto aún no disponible',
+  cash:'Billetes',cards:'Tarjetas',paypal:'Transferencias',
+  dcash:'Cada lote se fotografía antes del envío. Las imágenes muestran la calidad y el estado real del material.',
+  dcards:'Las tarjetas se documentan con fotos reales antes de la entrega.',
+  dpaypal:'Cada transferencia va acompañada de pruebas fotográficas.',
+  done:'CONTROL COMPLETADO',verified:'CARACTERÍSTICAS VERIFICADAS',
+  v1:'Fotos reales y actualizadas',v2:'Material verificado',v3:'Envío con seguimiento',v4:'Soporte dedicado'},
+ reviews:{e:'REGISTRO VERIFICADO',t:'RESEÑAS',q:'LAS RESEÑAS ESTÁN SOLO EN TELEGRAM',
+  d:'El registro de reseñas está moderado y vive en el canal. Entra para leerlas y dejar la tuya.',cta:'ABRIR CANAL DE RESEÑAS',stat:'98% POSITIVAS'},
+ faq:{e:'MÓDULO 03 // DOCUMENTACIÓN',t:'FAQ & SEGURIDAD',d:'Funcionamiento, protocolos, garantías e info de envíos.',tag:'DOCS OK',
+  sec:'CONEXIÓN SEGURA',secS:'Cifrado de extremo a extremo activo // Sin logs',prot:'PROTOCOLOS DE SEGURIDAD',
+  protList:['Comunicaciones en canales cifrados de extremo a extremo','Ninguna conservación de datos personales','Transacciones anónimas mediante crypto','Servidores offshore en jurisdicciones seguras'],
+  q1:['¿Cómo funciona el envío?','Todos los paquetes viajan en modo stealth con embalaje anónimo: la caja exterior no lleva ninguna referencia al contenido. Usamos mensajerías fiables y damos seguimiento en Telegram. Tiempos medios: UE 48–72h, fuera de la UE 5–7 días.'],
+  q2:['¿Aceptáis pagos anónimos?','Sí. Aceptamos criptomonedas: el método más rápido y con anonimato total. Sin datos bancarios, sin nombre, sin trazabilidad hacia ti.'],
+  q3:['¿Cómo funciona la recarga de PayPal?','Tras el pago, los fondos se transfieren a tu PayPal en 1–4 horas vía Amigos y Familia. Sin comisiones visibles y saldo disponible y retirable de inmediato.'],
+  q4:['¿Los billetes pasan los controles?','Sí. Todo el material es Grade AAA+ y supera el test del bolígrafo antifalsificación, la lámpara UV y el control táctil de la fibra de algodón. Prácticamente indistinguibles.'],
+  q5:['¿Y si incautan el paquete?','Con problemas aduaneros documentados (foto de la incautación) hacemos reenvío gratuito o reembolso completo. Gracias al embalaje anti-Xray la tasa de éxito supera el 98%.'],
+  q6:['¿Mis datos están seguros?','No conservamos datos personales. Los chats de Telegram están cifrados y los logs se borran cada 24 horas. Nunca pedimos documentos ni información identificativa.'],
+  q7:['¿Puedo hacer pedidos recurrentes?','Por supuesto. Los clientes habituales tienen descuentos dedicados y prioridad en el nuevo stock. Tras tu tercer pedido completado entras en el programa VIP.'],
+  q8:['¿Cuánto tardo en estar operativo?','Con crypto el pedido está activo en minutos: pagas, envías la prueba en Telegram y empieza la preparación. Con transferencia o vales Amazon se necesitan 24–48 horas laborables.']},
+ legal:{privacy:{t:'POLÍTICA DE PRIVACIDAD',u:'Última actualización: abril de 2026. Tratamiento conforme, cifrado avanzado, sin terceros.',
+   s:[['1. RECOGIDA DE DATOS','GUSTAVOEURO recoge solo los datos estrictamente necesarios para prestar los servicios solicitados. Los datos se tratan conforme a la normativa vigente de protección de datos.'],
+      ['2. FINALIDAD','Los datos se usan solo para gestionar solicitudes, mejorar la experiencia, cumplir obligaciones legales y garantizar la seguridad de la plataforma.'],
+      ['3. CONSERVACIÓN Y SEGURIDAD','Los datos se conservan el tiempo necesario y se protegen con cifrado avanzado. Al final del periodo se eliminan de forma segura.'],
+      ['4. TUS DERECHOS','Puedes acceder a tus datos, solicitar su rectificación o supresión y oponerte al tratamiento contactando al operador por los canales oficiales.'],
+      ['5. TRANSFERENCIA','Los datos personales no se venden, transfieren ni comparten con terceros, salvo obligación legal.']]},
+  terms:{t:'TÉRMINOS Y CONDICIONES',u:'Última actualización: abril de 2026. Condiciones de uso, responsabilidad y reglas.',
+   s:[['1. ACEPTACIÓN','El acceso y uso del portal implican la aceptación íntegra de estos términos. Si no los aceptas, no uses los servicios.'],
+      ['2. DESCRIPCIÓN DEL SERVICIO','GUSTAVOEURO es una plataforma informativa que da acceso a contenidos y servicios, con fines informativos y de entretenimiento.'],
+      ['3. REQUISITOS DE EDAD','Acceso reservado a mayores de edad (18+). Al usar la plataforma declaras tener la edad legal de tu país de residencia.'],
+      ['4. CONDUCTA','Te comprometes a no usar el servicio con fines ilegales, no comprometer su seguridad, no compartir información confidencial y respetar la propiedad intelectual.'],
+      ['5. LIMITACIÓN DE RESPONSABILIDAD','No somos responsables de daños directos o indirectos por el uso o imposibilidad de uso. Los contenidos se ofrecen “tal cual”, sin garantías.'],
+      ['6. CAMBIOS','Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios rigen desde su publicación.']]},
+  cookies:{t:'POLÍTICA DE COOKIES',u:'Última actualización: abril de 2026. Solo cookies técnicas esenciales.',
+   s:[['1. QUÉ SON','Las cookies son pequeños archivos guardados en tu dispositivo durante la navegación. Usamos solo cookies técnicas esenciales.'],
+      ['2. TIPOS','Cookies de sesión para la navegación, de seguridad contra ciberataques y de preferencias para guardar ajustes.'],
+      ['3. GESTIÓN','Puedes gestionarlas desde el navegador. Desactivar las cookies técnicas puede afectar a la plataforma.'],
+      ['4. TERCEROS','No incorporamos cookies de terceros ni compartimos datos con plataformas externas de publicidad o analítica.'],
+      ['5. DURACIÓN','Las cookies técnicas duran como máximo la sesión o 24 horas. Sin cookies persistentes a largo plazo.'],
+      ['6. ACTUALIZACIONES','Esta política puede actualizarse periódicamente: revísala con regularidad.']]}},
+ checkout:{sec:'SESIÓN CIFRADA',steps:['DATOS','VERIFICAR','PAGO','CONFIRMAR'],
+  s1:'PASO 1 // ENVÍO Y LOGÍSTICA',s1s:'Introduce los datos para la entrega anónima',
+  s1p:'PASO 1 // VERIFICAR EMAIL DE PAYPAL',s1ps:'Introduce el email de tu cuenta PayPal: allí llegará la transferencia',
+  sum:'RESUMEN DEL PEDIDO PROTEGIDO',tot:'TOTAL',addr:'DIRECCIÓN DE ENVÍO',street:'CALLE / PLAZA',num:'N.º',zip:'C.P.',city:'CIUDAD',
+  cont:'CONTACTOS',email:'EMAIL',phone:'MÓVIL',cour:'SELECCIONA MENSAJERO O PUNTO DE RECOGIDA',locker:'CÓDIGO LOCKER',
+  pmail:'EMAIL DE PAYPAL DEL DESTINATARIO',pmail2:'CONFIRMAR EMAIL DE PAYPAL',pmailE:'Introduce el email de PayPal',pmailB:'Introduce un email válido',pmailM:'Los emails no coinciden',
+  go:'CONTINUAR',fill:'Rellena todos los campos obligatorios',selcourier:'Selecciona un mensajero',noshipp:'SOLO TRANSFERENCIA — SIN ENVÍO',
+  sh:{p:['ECONOMY','2-4 DÍAS'],b:['EXPRESS','2-3 DÍAS'],g:['PREMIUM + EMBALAJE SEGURO','24-48H'],d:['ASEGURADO','24h'],l:['ANÓNIMO','2-4 DÍAS']},
+  s2:'PASO 2 // MÉTODO DE PAGO',sub2:'SELECCIONA CÓMO QUIERES PAGAR',
+  crypto:'CRYPTO',csub:'USDT - anónimo',cbadge:'RECOMENDADO - PROCESO INSTANTÁNEO',nofee:'0% TASAS',cpers:'Protege tu privacidad. Sin intermediario bancario, transacción anónima, cifrada, procesada en menos de 5 minutos.',
+  bon:'TRANSFERENCIA BANCARIA',bsub:'SEPA - 24/48H',bfee:'+10% GESTIÓN',amz:'TARJETAS AMAZON',asub:'verificación manual',afee:'+20% CONVERSIÓN',
+  cq:['¿YA TIENES UNA CARTERA CRYPTO?','Para pagar en USDT necesitas una cartera','SÍ, YA TENGO UNA','NO, NO LA TENGO'],
+  cg:['CÓMO CREAR UNA CARTERA CRYPTO','Descarga Trust Wallet o MetaMask','Crea una cartera nueva y guarda la frase secreta','Compra USDT en Binance u otro exchange','Transfiere USDT a tu cartera','ENTENDIDO, CONTINUAR'],
+  aq:['¿YA TIENES UNA TARJETA AMAZON?','Necesitas el código de 15 cifras + foto anverso/reverso','SÍ, TENGO LA TARJETA','NO, TENGO QUE COMPRARLA'],
+  ag:['DÓNDE COMPRAR UNA TARJETA AMAZON','Se venden en estancos, supermercados, tiendas de electrónica y más. Guarda el recibo con el código de 15 cifras.','IMPORTANTE: NO la canjees en tu cuenta. Envía el código sin usar.','ENTENDIDO, CONTINUAR'],
+  conf:'CONFIRMAR PEDIDO',rate:'TASA EN VIVO: 1 EUR ≈ 1.15 USDT',net:'SELECCIONA RED',send:'IMPORTE A ENVIAR',addrw:'DIRECCIÓN DE CARTERA',
+  sub:'SUBTOTAL',bfeeL:'TASA DE GESTIÓN BANCARIA +10%',vfeeL:'RECARGO CONVERSIÓN VOUCHER +20%',pay:'TOTAL A PAGAR',
+  timeleft:'TIEMPO RESTANTE',done:'PEDIDO CONFIRMADO',doneS:'REGISTRADO EN EL SISTEMA',code:'CÓDIGO DE PEDIDO',cc:'COPIAR CÓDIGO',
+  wait:'ESPERANDO CONFIRMACIÓN EN LA BLOCKCHAIN...',ct:'CONTACTAR OPERADOR EN TELEGRAM',back:'VOLVER',
+  warn:'El pedido NO comienza hasta que envíes el código de pedido y la prueba de pago al operador en Telegram.',
+  failT:'¿EL PAGO NO HA IDO BIEN?',fail:'Sin problema: contacta con GUSTAVOEURO en Telegram con tu código de pedido y completa el pedido en el chat. El operador te guiará paso a paso.',
+  amzI:'Envía en Telegram el CÓDIGO DE PEDIDO, el CÓDIGO DE TARJETA y la FOTO. El total incluye el +20% de conversión. Los códigos se verifican manualmente.',
+  bonI:'Contacta al operador en Telegram con el CÓDIGO DE PEDIDO. Te dará IBAN, titular y concepto. El total incluye la tasa de gestión bancaria del +10%.',
+  cryptoI:'Envía exactamente el importe indicado a la dirección mostrada, en la red seleccionada. Después manda en Telegram el CÓDIGO DE PEDIDO y el hash/captura.'},
+ track:{e:'MÓDULO 04 // SEGUIMIENTO',t:'SIGUE TU PEDIDO',d:'Introduce el código recibido en la confirmación para ver el estado y los artículos seleccionados.',ph:'GST-XXXX-XXXX',go:'BUSCAR PEDIDO',none:'No se ha encontrado ningún pedido con este código.',found:'PEDIDO ENCONTRADO',items:'ARTÍCULOS SELECCIONADOS',date:'FECHA',
+  st:['PEDIDO REGISTRADO','PAGO EN VERIFICACIÓN','EN PREPARACIÓN','ENVIADO'],
+  note:'El estado avanza tras la confirmación del pago en Telegram. Si el pago no ha ido bien, contacta con el operador y completa el pedido en el chat.',
+  local:'Nota: los pedidos se guardan en el navegador. Para el estado actualizado consulta siempre el canal de Telegram.'},
+ foot:{made:'PORTAL CREADO EN 2022 // OPERATIVOS DESDE 2022'}
+},
+de:{
+ c:{back:'← MENÜ',copy:'KOPIEREN',copied:'KOPIERT',total:'GESAMT',close:'Schließen',add:'Hinzufügen',buy:'Kaufen',added:'Zum Warenkorb',rm:'Entfernen',empty:'Dein Warenkorb ist leer',cart:'WARENKORB',checkout:'CHECKOUT',fill:'Alle Pflichtfelder ausfüllen',menu:'Menü'},
+ gate:{t:'BESCHRÄNKTER ZUGANG',s:'PASSWORT EINGEBEN',w:'FALSCHES PASSWORT
